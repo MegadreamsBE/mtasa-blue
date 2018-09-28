@@ -42,6 +42,9 @@ public:
     LUA_DECLARE(SetRight);
     LUA_DECLARE(SetUp);
 
+    LUA_DECLARE(ConvertToEulerAngles);
+    LUA_DECLARE(GetFromEulerAngles);
+
     LUA_DECLARE(Add);
     LUA_DECLARE(Sub);
     LUA_DECLARE(Mul);

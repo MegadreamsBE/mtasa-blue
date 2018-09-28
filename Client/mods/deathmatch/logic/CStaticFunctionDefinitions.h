@@ -36,6 +36,8 @@ public:
 
     // Misc funcs
     static bool DownloadFile(CResource* pResource, const char* szFile, CChecksum checksum = CChecksum());
+    static void ConvertMatrixToEulerAngles(const CMatrix& pMatrix, CVector& vecAngles);
+    static void GetMatrixFromEulerAngles(CMatrix& pMatrix, CVector& vecAngles);
 
     // Output funcs
     static bool OutputConsole(const char* szText);

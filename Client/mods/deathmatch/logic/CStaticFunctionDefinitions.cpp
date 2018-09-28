@@ -9671,3 +9671,13 @@ CClientSearchLight* CStaticFunctionDefinitions::CreateSearchLight(CResource& Res
 
     return nullptr;
 }
+
+void CStaticFunctionDefinitions::ConvertMatrixToEulerAngles(const CMatrix& pMatrix, CVector& vecAngles)
+{
+    m_pCore->GetMultiplayer()->ConvertMatrixToEulerAngles(pMatrix, vecAngles);
+}
+
+void CStaticFunctionDefinitions::GetMatrixFromEulerAngles(CMatrix& pMatrix, CVector& vecAngles)
+{
+    m_pCore->GetMultiplayer()->ConvertEulerAnglesToMatrix(pMatrix, vecAngles);
+}

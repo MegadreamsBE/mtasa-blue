@@ -42,6 +42,9 @@ void CLuaMatrixDefs::AddClass(lua_State* luaVM)
     lua_classfunction(luaVM, "setRight", SetRight);
     lua_classfunction(luaVM, "setUp", SetUp);
 
+    lua_classfunction(luaVM, "convertToEulerAngles", ConvertToEulerAngles);
+    lua_classfunction(luaVM, "getFromEulerAngles", GetFromEulerAngles);
+
     lua_classvariable(luaVM, "position", SetPosition, GetPosition);
     lua_classvariable(luaVM, "rotation", SetRotation, GetRotation);
     lua_classvariable(luaVM, "forward", SetForward, GetForward);
@@ -461,6 +464,56 @@ int CLuaMatrixDefs::SetUp(lua_State* luaVM)
     lua_pushboolean(luaVM, false);
     return 1;
 }
+
+#ifdef MTA_CLIENT
+int CLuaMatrixDefs::ConvertToEulerAngles(lua_State* luaVM)
+{
+    CLuaMatrix* pMatrix;
+
+    CScriptArgReader argStream(luaVM);
+    argStream.ReadUserData(pMatrix);
+
+    if (!argStream.HasErrors())
+    {
+        CVector vecAngles;
+        CStaticFunctionDefinitions::ConvertMatrixToEulerAngles(*pMatrix, vecAngles);
+
+        lua_pushvector(luaVM, vecAngles);
+        return 1;
+    }
+    else
+    {
+        m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage());
+    }
+
+    lua_pushboolean(luaVM, false);
+    return 1;
+}
+
+int CLuaMatrixDefs::GetFromEulerAngles(lua_State* luaVM)
+{
+    CVector vecAngles;
+
+    CScriptArgReader argStream(luaVM);
+    argStream.ReadVector3D(vecAngles);
+
+    if (!argStream.HasErrors())
+    {
+        CLuaMatrix* pMatrix = new CLuaMatrix();
+        CStaticFunctionDefinitions::GetMatrixFromEulerAngles(*pMatrix, vecAngles);
+
+        lua_pushmatrix(luaVM, *pMatrix);
+        return 1;
+    }
+    else
+    {
+        m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage());
+    }
+
+    lua_pushboolean(luaVM, false);
+    return 1;
+}
+#endif
 
 int CLuaMatrixDefs::Add(lua_State* luaVM)
 {
